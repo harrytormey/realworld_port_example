@@ -5,19 +5,18 @@ from datetime import datetime
 import markdown
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AnonymousUser
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from taggit.managers import TaggableManager
 from taggit.models import Tag
+from djongo import models as djongo_models
 
 User = get_user_model()
 
 
 class ArticleQuerySet(models.QuerySet):
     def with_favorites(self, user: AnonymousUser | User) -> models.QuerySet:
-
         return self.annotate(
             num_favorites=models.Count("favorites"),
             is_favorite=models.Exists(
